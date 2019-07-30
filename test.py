@@ -43,6 +43,8 @@ class VCFDataset(Dataset):
     def __getitem__(self, idx):
         chrom, pos, ref, alt = self.records[idx]
         seq = self.fasta[chrom][pos - self.wid // 2 - 1:pos + self.wid // 2].seq
+        if seq < self.width:
+            return
         tx_starts = self.annotations[chrom]["TX_STARTS"]
         idx_pos = bisect(tx_starts, pos) - 1
         if idx_pos == -1:
